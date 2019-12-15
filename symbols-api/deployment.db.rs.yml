@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: symbols-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: symbols
+      type: db
+  template:
+    metadata:
+      labels:
+        application: symbols
+        type: db
+    spec:
+      containers:
+        - name: db
+          image: mongo:4.2
+          ports:
+            - containerPort: 27017
+              protocol: TCP

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: symbols-api
+spec:
+  # we use node port here in order to be able to access the service outside minikube.
+  type: NodePort
+  selector:
+    application: symbols
+    type: api
+  ports:
+    - port: 8080
