@@ -3,8 +3,7 @@ kind: Service
 metadata:
   name: symbols-api
 spec:
-  # we use node port here in order to be able to access the service outside minikube.
-  type: NodePort
+  type: ClusterIP
   selector:
     application: symbols
     type: api

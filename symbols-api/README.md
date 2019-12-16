@@ -8,19 +8,15 @@
 
 ```bash
 minikube start --vm-driver=virtualbox
+minikube addons enable ingress
 
-for component in `echo "db api" | tr " " "\n"` ; do
-    for kind in `echo "deployment svc" | tr " " "\n"` ; do
-        kubectl apply -f deployment.$component.$kind.yml
-    done 
-done
+for file in `ls | grep -v -P '^deployment\..*\.yml$'` ; do kubectl create -f ; done
 
 # Добавить новый символ
-API_HOST=`minikube ip`
-API_PORT=`kubectl get -f deployment.api.svc.yml -o jsonpath='{.spec.ports[0].nodePort}'`
 curl \
     -XPUT \
+    -H "Host: symbols-registry.com" \
     -H "Content-type: text/plain" \
     -d 'biba kuka' \
-    $API_HOST:$API_PORT/symbols/biba
+    `minikube ip`/symbols/biba
 ```
