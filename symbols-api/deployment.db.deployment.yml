@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: symbols-db
 spec:
@@ -8,6 +8,8 @@ spec:
     matchLabels:
       application: symbols
       type: db
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:

@@ -1,13 +1,19 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: symbols-api
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       application: symbols
       type: api
+  progressDeadlineSeconds: 30
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 34%
   template:
     metadata:
       labels:

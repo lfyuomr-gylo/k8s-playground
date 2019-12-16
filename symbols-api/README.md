@@ -1,7 +1,7 @@
 ## Build image
 
 ```bash
-./gradlew clean build && docker build . -t symbols-api
+./gradlew clean build && docker build . -t lfyuomrgylo/symbols-api && docker push lfyuomrgylo/symbols-api
 ```
 
 ## Deploy to minikube
@@ -10,7 +10,7 @@
 minikube start --vm-driver=virtualbox
 
 for component in `echo "db api" | tr " " "\n"` ; do
-    for kind in `echo "rs svc" | tr " " "\n"` ; do
+    for kind in `echo "deployment svc" | tr " " "\n"` ; do
         kubectl apply -f deployment.$component.$kind.yml
     done 
 done
