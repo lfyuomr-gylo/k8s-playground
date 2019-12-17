@@ -22,3 +22,9 @@ spec:
           ports:
             - containerPort: 27017
               protocol: TCP
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data-volume
+      volumes:
+        - name: mongo-data-volume
+          emptyDir: {}

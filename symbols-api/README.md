@@ -10,7 +10,7 @@
 minikube start --vm-driver=virtualbox
 minikube addons enable ingress
 
-for file in `ls | grep -v -P '^deployment\..*\.yml$'` ; do kubectl create -f ; done
+for file in `ls | grep -P '^deployment\..*\.yml$'` ; do kubectl create -f $file ; done
 
 # Добавить новый символ
 curl \
@@ -19,4 +19,18 @@ curl \
     -H "Content-type: text/plain" \
     -d 'biba kuka' \
     `minikube ip`/symbols/biba
+
+# Получить символ
+curl \
+    -H "Host: symbols-registry.com" \
+    `minikube ip`/symbols/biba
+
+# Эмулируем падение монги, чтобы кубернетес пересоздал контейнер
+kubectl exec  deploy/symbols-db kill 1 
+
+# Убеждаемся, что данные не потерялись
+curl \
+    -H "Host: symbols-registry.com" \
+    `minikube ip`/symbols/biba
+
 ```
