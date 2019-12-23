@@ -1,1 +1,1 @@
-rootProject.name = "k8s-pet-project"
+rootProject.name = "k8s-symbols-repository"
