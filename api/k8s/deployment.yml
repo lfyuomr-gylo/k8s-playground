@@ -29,6 +29,23 @@ spec:
           env:
             - name: SPRING_DATA_MONGODB_HOST
               value: symbols-db
+            - name: SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE
+              value: admin
+            - name: SPRING_DATA_MONGODB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: dbname
+            - name: SPRING_DATA_MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: username
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: password
           readinessProbe:
             httpGet:
               port: 8080

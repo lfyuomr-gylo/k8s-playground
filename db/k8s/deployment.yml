@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: symbols-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: symbols
+      type: db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        application: symbols
+        type: db
+    spec:
+      containers:
+        - name: db
+          image: lfyuomrgylo/symbols-mongo
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-data-volume
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-root-credentials
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-root-credentials
+                  key: password
+            - name: SYMBOLS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: username
+            - name: SYMBOLS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: password
+            - name: SYMBOLS_DBNAME
+              valueFrom:
+                secretKeyRef:
+                  name: symbols-db-service-credentials
+                  key: dbname
+      volumes:
+        - name: mongo-data-volume
+          emptyDir: {}
